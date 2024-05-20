@@ -6,6 +6,7 @@ import 'package:instagram_clones/responsive/responsive_layout.dart';
 import 'package:instagram_clones/responsive/web_screen_layout.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:instagram_clones/screens/login_screen.dart';
+import 'package:instagram_clones/screens/signup_screen.dart';
 import 'firebase_options.dart';
 
 Future main() async {
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
         title: 'Instagram',
         theme: ThemeData.dark()
             .copyWith(scaffoldBackgroundColor: mobileBackgroundColor),
-        home: const Scaffold(body: LoginScreen()));
+        home: const Scaffold(
+          body: SignupScreen(),
+          resizeToAvoidBottomInset: false,
+        ));
   }
 }
