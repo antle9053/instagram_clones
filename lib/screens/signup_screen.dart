@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clones/constants/colors.dart';
 import 'package:instagram_clones/resources/auth_methods.dart';
 import 'package:instagram_clones/utils/pick_image.dart';
+import 'package:instagram_clones/utils/show_snack_bar.dart';
 import 'package:instagram_clones/widgets/text_field_input.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -35,6 +37,25 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _image = image;
     });
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethos().signUpUser(
+        email: _emailController.text,
+        username: _usernameController.text,
+        password: _passwordController.text,
+        bio: _bioController.text,
+        file: _image!);
+    setState(() {
+      _isLoading = false;
+    });
+    if (!context.mounted) return;
+    if (res != 'success') {
+      showSnackBar(res, context);
+    } else {}
   }
 
   @override
@@ -97,16 +118,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               const SizedBox(height: 24),
               InkWell(
-                onTap: () async {
-                  String res = await AuthMethos().signUpUser(
-                      email: _emailController.text,
-                      username: _usernameController.text,
-                      password: _passwordController.text,
-                      bio: _bioController.text,
-                      file: _image!);
-
-                  print(res);
-                },
+                onTap: signUpUser,
                 child: Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -116,7 +128,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(4))),
                     color: blueColor,
                   ),
-                  child: const Text('Sign up'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                          color: primaryColor,
+                        ))
+                      : const Text('Sign up'),
                 ),
               ),
               const SizedBox(height: 12),
