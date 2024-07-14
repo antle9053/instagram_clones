@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:instagram_clones/models/user.dart' as model;
+import 'package:instagram_clones/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
-class WebScreenLayout extends StatelessWidget {
+class WebScreenLayout extends StatefulWidget {
   const WebScreenLayout({super.key});
 
   @override
+  State<WebScreenLayout> createState() => _WebScreenLayoutState();
+}
+
+class _WebScreenLayoutState extends State<WebScreenLayout> {
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text('This is web view'),
-      ),
-    );
+    model.User user = Provider.of<UserProvider>(context).getUser;
+    return Scaffold(
+        body: Center(
+      child: Text(user.username),
+    ));
   }
 }

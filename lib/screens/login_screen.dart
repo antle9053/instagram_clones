@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethos()
+    String res = await AuthMethods()
         .loginUser(_emailController.text, _passwordController.text);
     setState(() {
       _isLoading = false;
